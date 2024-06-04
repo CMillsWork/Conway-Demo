@@ -1,0 +1,73 @@
+[gd_scene load_steps=12 format=3 uid="uid://cwtghnlmba51a"]
+
+[ext_resource type="Texture2D" uid="uid://vfxa5tqxohie" path="res://grass_tile.png" id="1_obpkl"]
+[ext_resource type="Script" path="res://main.gd" id="1_t0q0l"]
+[ext_resource type="Script" path="res://TileMap.gd" id="2_1ooh6"]
+[ext_resource type="Texture2D" uid="uid://dgtru1qnufqq3" path="res://tile_selected.png" id="2_ajnx4"]
+[ext_resource type="Texture2D" uid="uid://cp3jmu4is1scq" path="res://Water Ball.png" id="3_sghto"]
+[ext_resource type="Texture2D" uid="uid://c4emogy1pm7yb" path="res://Plant Blob.png" id="4_gd5wk"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jtol4"]
+texture = ExtResource("1_obpkl")
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oflqx"]
+texture = ExtResource("2_ajnx4")
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cg54m"]
+texture = ExtResource("3_sghto")
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ga2ew"]
+texture = ExtResource("4_gd5wk")
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_g0thi"]
+sources/0 = SubResource("TileSetAtlasSource_jtol4")
+sources/1 = SubResource("TileSetAtlasSource_oflqx")
+sources/3 = SubResource("TileSetAtlasSource_cg54m")
+sources/4 = SubResource("TileSetAtlasSource_ga2ew")
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_t0q0l")
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_g0thi")
+format = 2
+layer_0/name = "Grass"
+layer_1/name = "Selected"
+layer_1/tile_data = PackedInt32Array()
+layer_2/name = "GridItems"
+layer_2/tile_data = PackedInt32Array()
+script = ExtResource("2_1ooh6")
+
+[node name="StartButton" type="Button" parent="."]
+unique_name_in_owner = true
+offset_left = -49.0
+offset_top = 3.0
+offset_right = -3.0
+offset_bottom = 34.0
+toggle_mode = true
+text = "Start"
+
+[node name="StepButton" type="Button" parent="."]
+unique_name_in_owner = true
+offset_left = -48.0
+offset_top = 36.0
+offset_right = -5.0
+offset_bottom = 67.0
+text = "Step"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(135, 100)
+zoom = Vector2(3, 3)
+
+[node name="Clock" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.1
+one_shot = true
+
+[connection signal="toggled" from="StartButton" to="." method="_on_button_toggled"]
+[connection signal="pressed" from="StepButton" to="." method="_on_step_button_pressed"]
+[connection signal="timeout" from="Clock" to="TileMap" method="_on_timer_timeout"]
